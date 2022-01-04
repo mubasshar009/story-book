@@ -1,15 +1,15 @@
-import TaskList from './TaskList';
+import {PureTaskList} from './TaskList';
 import * as TaskStories from './Task.stories';
 import { ComponentMeta, ComponentStory } from '@storybook/react';
 export default {
-    component: TaskList,
+    component: PureTaskList,
     title: 'TaskList',
     decorators: [
         story => <div style={{ padding: '3rem' }}>{story()}</div>
     ]
-} as ComponentMeta<typeof TaskList>
+} as ComponentMeta<typeof PureTaskList>
 
-const Template: ComponentStory<typeof TaskList> = args => <TaskList {...args} />
+const Template: ComponentStory<typeof PureTaskList> = args => <PureTaskList {...args} />
 
 export const Default = Template.bind({});
 

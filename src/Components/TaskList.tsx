@@ -1,12 +1,18 @@
 import { TaskBase } from './Task';
 import { Task } from './Task';
+import { useDispatch,useSelector} from 'react-redux';
+import { updateTaskState ,RootState} from '../lib/store';
+
 export type PropsList = {
     loading: boolean;
     tasks: TaskBase[];
     onPinTask: (id: string) => void;
     onArchiveTask: (id: string) => void;
 }
-const TaskList = ({ loading, tasks, onPinTask, onArchiveTask }: PropsList) => {
+
+
+
+export const PureTaskList = ({ loading, tasks, onPinTask, onArchiveTask }: PropsList) => {
 
     let events = { onPinTask, onArchiveTask };
     const LoadingRow = (
@@ -51,4 +57,23 @@ const TaskList = ({ loading, tasks, onPinTask, onArchiveTask }: PropsList) => {
         </div>
     )
 }
-export default TaskList
+export const TaskList = () => {
+    //Receiving state;
+    const tasks = useSelector((state:RootState) => state.tasks);
+    const dispatch = useDispatch();
+    const PinTask = (value:string) => {
+        dispatch(updateTaskState({id:value,newTaskState:"TASK_PINNED"}))
+    }
+    const ArchiveTask = (value:string) => {
+        dispatch(updateTaskState({id:value,newTaskState:"TASK_ARCHIVED"}))
+    }
+    const filteredTasks = tasks.filter((t) => t.state === "TASK_INBOX" || t.state === "TASK_PINNED")
+    return(
+        <PureTaskList
+            tasks={filteredTasks}
+            onPinTask={task => PinTask(task)}
+            onArchiveTask = {task => ArchiveTask(task)}
+            loading={false}
+            />
+    )
+}
