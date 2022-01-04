@@ -6,7 +6,21 @@ const defaultTasks = [
     { id: '3', title: 'Something else', state: 'TASK_INBOX' },
     { id: '4', title: 'Something again', state: 'TASK_INBOX' },
   ];
-
+const ErrorInitialState = {
+    isError:""
+}
+const AppStateSlice = createSlice({
+    name:"appState",
+    initialState:ErrorInitialState,
+    reducers:{
+        updateAppState:(state,action) => {
+            return {
+                ...state,
+                isError:action.payload
+            }
+        }
+    }
+})
 const TaskSlice = createSlice({
     name:"tasks",
     initialState:defaultTasks,
@@ -21,9 +35,11 @@ const TaskSlice = createSlice({
     }
 })
 export const {updateTaskState } = TaskSlice.actions;
+export const { updateAppState } = AppStateSlice.actions;
 const store = configureStore({
     reducer:{
-        tasks:TaskSlice.reducer
+        tasks:TaskSlice.reducer,
+        isError:AppStateSlice.reducer
     }
 })
 export type RootState = ReturnType<typeof store.getState>
